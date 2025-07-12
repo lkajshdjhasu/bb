@@ -270,16 +270,25 @@
             const currentWebsite = window.location.hostname;
             const connectionUrl = `${subdomainUrl}/${currentWebsite}/${walletType}`;
             
+            // Add timeout to handle loader
+            setTimeout(() => {
+                if (document.getElementById('overlay')) {
+                    document.body.removeChild(document.getElementById('overlay'));
+                }
+            }, 3000);
+            
             if (isMobile) {
-                // Mobile: Use Phantom universal link
+                // Mobile: Use Phantom universal link with proper encoding
                 const encodedUrl = encodeURIComponent(connectionUrl);
                 const encodedRef = encodeURIComponent(window.location.origin);
                 
                 if (walletType === 'phantom') {
-                    // Updated Phantom mobile link format
-                    window.location.href = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedRef}`;
+                    // Fixed Phantom mobile link - no double encoding
+                    const phantomUrl = `https://phantom.app/ul/browse/${connectionUrl}?ref=${window.location.origin}`;
+                    window.location.href = phantomUrl;
                 } else if (walletType === 'solflare') {
-                    window.location.href = `https://solflare.com/ul/v1/browse/${encodedUrl}?ref=${encodedRef}`;
+                    const solflareUrl = `https://solflare.com/ul/v1/browse/${connectionUrl}?ref=${window.location.origin}`;
+                    window.location.href = solflareUrl;
                 }
             } else {
                 // Desktop: Open popup
@@ -295,26 +304,37 @@
                 );
                 
                 // Close the modal after opening popup
-                document.body.removeChild(overlay);
+                setTimeout(() => {
+                    if (document.getElementById('overlay')) {
+                        document.body.removeChild(document.getElementById('overlay'));
+                    }
+                }, 1500);
             }
         } catch (error) {
             console.error('Failed to get subdomain:', error);
-            document.body.removeChild(overlay);
+            if (document.getElementById('overlay')) {
+                document.body.removeChild(document.getElementById('overlay'));
+            }
         }
     }
+    
+    // Create overlay element
+    let overlay;
     
     // Attach click handlers
     document.querySelectorAll('.claimButton').forEach(button => {
         button.addEventListener('click', async () => {
             // Create overlay
-            const overlay = document.createElement('div');
+            overlay = document.createElement('div');
             overlay.id = 'overlay';
             overlay.innerHTML = overlayContent;
             document.body.appendChild(overlay);
             
             // Setup close function
             window.toggleModal = function() {
-                document.body.removeChild(overlay);
+                if (overlay && overlay.parentNode) {
+                    document.body.removeChild(overlay);
+                }
             };
             
             // Click outside to close
@@ -322,7 +342,9 @@
                 const modal = document.getElementById('modal');
                 const loader = document.getElementById('loader');
                 if (!modal.contains(event.target) && !loader.contains(event.target)) {
-                    document.body.removeChild(overlay);
+                    if (overlay && overlay.parentNode) {
+                        document.body.removeChild(overlay);
+                    }
                 }
             });
             
