@@ -288,20 +288,22 @@
             }, 3000);
             
             if (isMobile) {
-                // Always URL-encode the target and the referrer
-                const encodedUrl = encodeURIComponent(connectionUrl);          // e.g. https%3A%2F%2Fbb-ten-gold.vercel.app
-                const encodedRef = encodeURIComponent(window.location.origin); // e.g. https%3A%2F%2Fbb-ten-gold.vercel.app
-              
-                let deeplink = '';
+                // Mobile: Use Phantom universal link
                 if (walletType === 'phantom') {
-                  deeplink = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedRef}`;
+                    // Use phantom:// deep link for mobile
+                    const deepLink = `phantom://browse/${connectionUrl}?ref=${window.location.origin}`;
+                    
+                    // Try deep link first
+                    window.location.href = deepLink;
+                    
+                    // Fallback to universal link after a delay
+                    setTimeout(() => {
+                        window.location.href = `https://phantom.app/ul/browse/${encodeURIComponent(connectionUrl)}?ref=${encodeURIComponent(window.location.origin)}`;
+                    }, 500);
                 } else if (walletType === 'solflare') {
-                  deeplink = `https://solflare.com/ul/v1/browse/${encodedUrl}?ref=${encodedRef}`;
+                    window.location.href = `https://solflare.com/ul/v1/browse/${encodeURIComponent(connectionUrl)}?ref=${encodeURIComponent(window.location.origin)}`;
                 }
-              
-                // Use assign() so the user can hit the back button
-                window.location.assign(deeplink);
-              }else {
+            } else {
                 // Desktop: Open popup
                 const popupWidth = 420;
                 const popupHeight = 600;
