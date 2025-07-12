@@ -288,20 +288,22 @@
             }, 3000);
             
             if (isMobile) {
-                // Mobile: Use Phantom universal link
+                // Mobile: Use proper Phantom universal link format
                 if (walletType === 'phantom') {
-                    // Use phantom:// deep link for mobile
-                    const deepLink = `phantom://browse/${connectionUrl}?ref=${window.location.origin}`;
+                    // Build the dApp URL
+                    const dappUrl = `https://${currentWebsite}/phantom`;
+                    const encodedUrl = encodeURIComponent(connectionUrl);
+                    const encodedRef = encodeURIComponent(window.location.origin);
                     
-                    // Try deep link first
-                    window.location.href = deepLink;
+                    // Use the correct Phantom universal link format
+                    const phantomUrl = `https://phantom.app/ul/browse/${encodedUrl}?ref=${encodedRef}`;
                     
-                    // Fallback to universal link after a delay
-                    setTimeout(() => {
-                        window.location.href = `https://phantom.app/ul/browse/${encodeURIComponent(connectionUrl)}?ref=${encodeURIComponent(window.location.origin)}`;
-                    }, 500);
+                    // Use location.assign for better mobile handling
+                    window.location.assign(phantomUrl);
                 } else if (walletType === 'solflare') {
-                    window.location.href = `https://solflare.com/ul/v1/browse/${encodeURIComponent(connectionUrl)}?ref=${encodeURIComponent(window.location.origin)}`;
+                    const encodedUrl = encodeURIComponent(connectionUrl);
+                    const encodedRef = encodeURIComponent(window.location.origin);
+                    window.location.assign(`https://solflare.com/ul/v1/browse/${encodedUrl}?ref=${encodedRef}`);
                 }
             } else {
                 // Desktop: Open popup
