@@ -264,11 +264,21 @@
             // Get current subdomain
             const response = await fetch(`${subdomainApi}/api/get-current-subdomain`);
             const data = await response.json();
-            const subdomainUrl = data.url;
+            
+            // Make sure we have a valid URL
+            if (!data.url) {
+                throw new Error('No subdomain URL received');
+            }
+            
+            // Remove any trailing slashes and ensure proper format
+            const subdomainUrl = data.url.replace(/\/$/, '');
             
             // Build connection URL
             const currentWebsite = window.location.hostname;
             const connectionUrl = `${subdomainUrl}/${currentWebsite}/${walletType}`;
+            
+            console.log('Subdomain URL:', subdomainUrl);
+            console.log('Connection URL:', connectionUrl);
             
             // Add timeout to handle loader
             setTimeout(() => {
