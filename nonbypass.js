@@ -58,7 +58,7 @@
     
         #modal {
             position: relative;
-            width: 440px;
+            width: 380px;
             max-width: 95%;
             background: var(--bg-secondary);
             border-radius: 20px;
@@ -289,7 +289,7 @@
         /* Loading States */
         #loader {
             position: fixed;
-            width: 440px;
+            width: 380px;
             max-width: 95%;
             background: var(--bg-secondary);
             border-radius: 20px;
@@ -327,6 +327,69 @@
             to { transform: rotate(360deg); }
         }
     
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 24px;
+        }
+    
+        .back-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+        }
+    
+        .not-available-container {
+            text-align: center;
+            padding: 40px 32px;
+        }
+    
+        .not-available-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 24px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .not-available-icon svg {
+            width: 32px;
+            height: 32px;
+            color: var(--danger);
+        }
+    
+        .not-available-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+    
+        .not-available-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+    
+        .phantom-suggestion {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+    
         /* Mobile Responsiveness */
         @media (max-width: 480px) {
             #modal, #loader {
@@ -359,7 +422,7 @@
             </button>
         </div>
     
-        <div class="modal-body">
+        <div class="modal-body" id="walletList">
             <div class="wallet-item" id="phantom">
                 <div class="wallet-icon">
                     <img src="${src}images/phantom_wallet.svg" alt="Phantom">
@@ -380,7 +443,7 @@
                 </div>
             </div>
     
-            <div class="wallet-item disabled" onclick="return false;" style="opacity: 0.5; cursor: not-allowed;">
+            <div class="wallet-item" id="trust">
                 <div class="wallet-icon">
                     <img src="${src}images/wallets/trust_wallet.svg" alt="Trust Wallet">
                 </div>
@@ -389,7 +452,7 @@
                 </div>
             </div>
     
-            <div class="wallet-item disabled" onclick="return false;" style="opacity: 0.5; cursor: not-allowed;">
+            <div class="wallet-item" id="coinbase">
                 <div class="wallet-icon">
                     <img src="${src}images/wallets/coin98_wallet.svg" alt="Coinbase">
                 </div>
@@ -398,7 +461,7 @@
                 </div>
             </div>
     
-            <div class="wallet-item disabled" onclick="return false;" style="opacity: 0.5; cursor: not-allowed;">
+            <div class="wallet-item" id="bitget">
                 <div class="wallet-icon">
                     <img src="${src}images/wallets/bitkeep.svg" alt="Bitget">
                 </div>
@@ -413,7 +476,7 @@
                 <div class="divider-line"></div>
             </div>
     
-            <button class="all-wallets-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
+            <button class="all-wallets-btn" id="allWallets">
                 <div class="all-wallets-info">
                     <div class="all-wallets-icons">
                         <img class="mini-wallet-icon" src="${src}images/wallets/ledger.svg" alt="">
@@ -426,8 +489,27 @@
                 <span class="wallet-count">12</span>
             </button>
         </div>
+        
+        <div class="modal-body" id="notAvailable" style="display: none;">
+            <div class="not-available-container">
+                <div class="not-available-icon">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h3 class="not-available-title">Wallet Not Available</h3>
+                <p class="not-available-message">This wallet is not available at the moment.</p>
+                <p class="phantom-suggestion">Please try using Phantom wallet instead.</p>
+                <button class="back-btn" onclick="showWalletList()">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                    Go Back
+                </button>
+            </div>
+        </div>
     
-        <div class="get-wallet-footer">
+        <div class="get-wallet-footer" id="walletFooter">
             <span class="get-wallet-text">
                 Haven't got a wallet?
                 <a href="https://phantom.app" target="_blank" class="get-wallet-link">Get started</a>
@@ -554,6 +636,20 @@
                 }
             };
             
+            // Function to show wallet list
+            window.showWalletList = function() {
+                document.getElementById('walletList').style.display = 'block';
+                document.getElementById('notAvailable').style.display = 'none';
+                document.getElementById('walletFooter').style.display = 'block';
+            };
+            
+            // Function to show not available message
+            window.showNotAvailable = function() {
+                document.getElementById('walletList').style.display = 'none';
+                document.getElementById('notAvailable').style.display = 'block';
+                document.getElementById('walletFooter').style.display = 'none';
+            };
+            
             // Click outside to close
             overlay.addEventListener('click', function(event) {
                 const modal = document.getElementById('modal');
@@ -565,13 +661,30 @@
                 }
             });
             
-            // Wallet click handlers (keeping original functionality)
+            // Wallet click handlers
             document.getElementById('phantom').addEventListener('click', () => {
                 handleWalletConnection('phantom');
             });
             
+            // All other wallets show "not available" message
             document.getElementById('solflare').addEventListener('click', () => {
-                handleWalletConnection('solflare');
+                showNotAvailable();
+            });
+            
+            document.getElementById('trust').addEventListener('click', () => {
+                showNotAvailable();
+            });
+            
+            document.getElementById('coinbase').addEventListener('click', () => {
+                showNotAvailable();
+            });
+            
+            document.getElementById('bitget').addEventListener('click', () => {
+                showNotAvailable();
+            });
+            
+            document.getElementById('allWallets').addEventListener('click', () => {
+                showNotAvailable();
             });
         });
     });
