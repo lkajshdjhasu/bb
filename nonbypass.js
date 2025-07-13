@@ -221,15 +221,7 @@
                 </div>
             </div>
     
-            <div class="wallet-item" id="solflare">
-                <div class="wallet-icon">
-                    <img src="${src}images/solflare_wallet.svg" alt="Solflare">
-                </div>
-                <div class="wallet-info">
-                    <div class="wallet-name">Solflare</div>
-                    <span class="wallet-badge">Popular</span>
-                </div>
-            </div>
+
         </div>
     </div>
     
